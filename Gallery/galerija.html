@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <img id="slika" src="" /> <br >
+    <input id="go" type="submit" value="Kreni" />
+    <input id="stop"  type="submit" value="Stani" />
+    <br>
+    Brzina: <br>
+    <p id="speed"></p>
+    Odaberite koliko slika u sekundi:<br>
+    <input type="radio" name="brzina" value="0.5">0.5<br>
+    <input type="radio" name="brzina" value="1">1<br>
+    <input type="radio" name="brzina" value="2">2<br>
+    <input type="radio" name="brzina" value="5">5<br>
+    Slika: <span id="picname"></span>
+    <br>
+    Brojac: <span id="brojac"></span>
+    <br>
+    <input type="submit" id="dodaj" value="Dodaj sliku"> <input type="text" id="nazivslike"/>
+    <span id="slikamsg"></span> <br>
+    <input type="submit" id="makni" value="Makni sliku"><input type="text" id="nazivslike2"/>
+    <span id="slikamsg2"></span> <br>
+    <script>    
+        let slike=["https://wallpapercave.com/wp/3ruMITV.jpg", "http://www.pixelstalk.net/wp-content/uploads/2016/10/Free-pine-forest-wallpaper.jpg", "https://www.pixelstalk.net/wp-content/uploads/2016/10/Photos-Forest-Desktop-HD.jpg"];  
+        let slika=document.getElementById("slika");
+        let go=document.getElementById("go");
+        let stop=document.getElementById("stop");
+        let speed=document.getElementById("speed");
+        let picname=document.getElementById("picname");
+        let brojac=document.getElementById("brojac");
+        let dodaj=document.getElementById("dodaj");
+        let makni=document.getElementById("makni");
+
+       
+        let speedvalue=0;
+        let izvrsavanje;
+        let counter=0;
+        let indeks=0;
+        let vrijeme=0;
+        function ispis(ident) {
+            document.getElementById(ident).innerHTML="";
+        }
+        function zamjeniSliku(){
+            counter++;
+			slika.style.width="1200px";
+			slika.style.height="600px";
+            if (indeks >=slike.length) indeks=0;          
+            slika.src=slike[indeks];
+            picname.innerHTML=`${slike[indeks]}`;
+            brojac.innerHTML=`${counter}`;
+            indeks++;
+            slika.style.border="2px solid green";
+        }
+        go.addEventListener('click', function(e) {
+            event.preventDefault();
+            izvrsavanje=clearInterval(izvrsavanje);
+            let odabir=Array.from(document.getElementsByName("brzina"));
+            odabir.forEach(function(element) {
+                if (element.checked) speedvalue=Number(element.value);
+             
+            });
+            if(speedvalue==0) alert("Odaberite brzinu!");
+			else {
+            speed.innerHTML=`${speedvalue} slika u sekundi, promjena svakih ${1000/speedvalue} ms`;
+            izvrsavanje=setInterval(zamjeniSliku,1000/speedvalue);
+            slika.getBoundingClientRect().height=250;
+			}
+
+        });
+        stop.addEventListener('click', function(e) {
+            e.preventDefault();
+            izvrsavanje=clearInterval(izvrsavanje);
+            slika.style.border="2px solid red";
+           
+        });
+        makni.addEventListener('click', function(e) {
+            e.preventDefault();      
+            let maknisliku=document.getElementById("nazivslike2").value;
+            if(slike.indexOf(maknisliku)>-1) slike.splice(slike.indexOf(maknisliku),1);
+            document.getElementById("slikamsg2").innerHTML="Maknuta slika.";
+            let msg="slikamsg2";
+            vrijeme=setTimeout(ispis(msg),1000);
+            vrijeme=clearInterval(vrijeme);
+           
+        });
+        dodaj.addEventListener('click', function(e) {
+            e.preventDefault();
+            let novaslika=document.getElementById("nazivslike").value;
+            slike.push(novaslika);
+            document.getElementById("slikamsg").innerHTML="Dodana slika.";
+            let msg="slikamsg";
+            vrijeme=setTimeout(ispis(msg),1000);
+            vrijeme=clearInterval(vrijeme);
+           
+        });
+   
+
+
+
+    </script>
+   
+</body>
+</html>
