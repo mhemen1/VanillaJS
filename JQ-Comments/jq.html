@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         #komentari {
+            background-color: gray;
+            max-width: 500px;
+			min-height:20px;
+			
+         }
+        .divv {
+            border:2px solid black;
+            padding:5px;
+            max-width: 500px;
+            margin:10px;
+			min-height:20px;
+        }
+        .crveni {
+            border:2px solid red;
+            background-color: white;
+
+        }
+    </style>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <script type="text/javascript">
+
+   
+        $(document).ready(function() {
+
+            $("#tekst").keyup(function(event){
+                $("#brojac").html(($(this).val().length));
+
+            });
+            $("#btn").click(function(event) {
+                let div=$("<div id=\"dodan\" class=\"divv\"></div>");
+                div.html( $("#tekst").val());
+                $("#komentari").append(div);
+                $("#broj").html($("#komentari > #dodan").length);
+
+            })
+
+            $("#check").click(function(event) {
+                $("#komentari").fadeToggle(1000);
+            })
+            $("#komentari").on("mouseenter",'#dodan',function(){
+                $(this).toggleClass("crveni");
+            }).on("mouseleave",'#dodan',function(){
+                $(this).toggleClass("crveni");
+			});
+			
+            $("#komentari").on("click",'div',function(){
+                $(this).remove();
+                $("#broj").html($("#komentari > #dodan").length);
+            })
+
+        });
+
+
+
+</script>
+</head>
+<body>
+    <h2>Unesite novi komentar</h2>
+    <textarea id="tekst" row="50" cols="50" placeholder="....unesite tekst..."></textarea>
+    <div id="brojac"></div><br>
+    <input type="submit" id="btn" value="Send!"><br>
+    <label><input type="checkbox" id="check" checked> Prikazi Komentare</label> <br>
+    <div id="komentari">
+        Komentari(<span id="broj"></span>) <br>
+    </div>
+   
+</body>
+</html>
